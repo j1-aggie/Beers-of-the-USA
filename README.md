@@ -17,7 +17,7 @@
  *  The final visualization should have at least three views. 
 
 # Proposal 
-Our project will be focused on querying data from a brewery API so that users can query a state and pull up the breweries within the city for a user to potentially visit. Then, the user can hover over each of the pinned locations to find the name, address & phone number for each brewery.
+Our project will be focused on querying data from a brewery dataset (csv) so that users can query a style of beer and pull up the mixture to see how the beer is made. The user will be able to filter down to a type of beer along with corresponding visuals that project quantative measurments that distinguish the beer from other beers.  
 
 ## Datasets:
-www.brewerydb.com
+https://www.kaggle.com/jtrofe/beer-recipes
