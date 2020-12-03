@@ -1,3 +1,4 @@
+Select * from open_beer_database
 
 drop table if exists open_beer_database 
 
@@ -24,5 +25,3 @@ create table open_beer_database (
 	Coordinates VARCHAR
 	
 );
-
-select * from open_beer_database
