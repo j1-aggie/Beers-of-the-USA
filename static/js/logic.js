@@ -20,3 +20,21 @@ L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?acce
 //         .addTo(myMap);
 // })
 
+// chloromap
+var chloroMap = L.map("chloroMap", {
+    center: [37.8, -96],
+    zoom: 4
+});
+
+// var chloroMap = L.map('chloroMap').setView([37.8, -96], 4);
+
+L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+    id: 'light-v9',
+    // attribution: 'Chad Dubiel',
+    tileSize: 512,
+    zoomOffset: -1,
+    accessToken: API_KEY
+}).addTo(chloroMap);
+
+L.geoJson(statesData).addTo(chloroMap);
+
