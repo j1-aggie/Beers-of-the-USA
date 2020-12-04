@@ -1,7 +1,7 @@
 // building charts
 function buildCharts(style){
     d3.csv('data/open-beer-database.csv', function(data){
-        console.log(data)
+        // console.log(data)
         data.forEach((beer)=> {
             // console.log(beer)
             var styleType = beer.Style
@@ -22,34 +22,16 @@ function buildCharts(style){
 }
 buildCharts();
 
+
 function createDropDown(style){
     var selector = d3.select('#selDataset');
     d3.csv('data/open-beer-database.csv', function(data){
     data.forEach((beer) => {
-        console.log(beer)
+        // console.log(beer)
         var styleType = beer.Style;
 
-        var uniqueStyles = [];
-
-        var count = 0;
-        var start = false;
-        
-        console.log(styleType)
         for (var i = 0; i < styleType.length; i++){
-            // for (var a = 0; a < uniqueStyles.length; a++) {
-            //     if (i = uniqueStyles[a]){
-            //         start = true;
-            //     }
-            // }
-            // count ++
-            // if (count == 1 && start == false){
-            //     uniqueStyles.push(i)
-            // }
-            // start = false;
-            // count = 0;
-
-            // // document.write(uniqueStyles)
-            // console.log(uniqueStyles)
+          
             selector
             .append('option')
             .text(styleType)
@@ -57,20 +39,22 @@ function createDropDown(style){
 
         }
 
-            // selector
-            // .append('option')
-            // .text(styleType)
-            // .property('value', styleType)
         })
-        // styleType.forEach((beer) => {
-        //     selector
-        //     .append('option')
-        //     .text(beer)
-        //     .property('value', beer)
-        // })
+        var types = document.getElementById('selDataset');
+        [].slice.call(types.options)
+        .map(function(a){
+            if(this[a.value]){
+                types.removeChild(a);
+            } else {
+                this[a.value]=1
+            }
+        }, {});
+
 
 
     })
+
+
 }
 
 
