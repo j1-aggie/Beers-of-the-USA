@@ -1,6 +1,6 @@
 Name,id,brewery_id,cat_id,style_id,Alcohol_By_Vol,International_Bitterness_Units,Standard_Reference_Method,Universal_Product_Code,Description,add_user,last_mod,Style,Category,Brewer,Address,City,State,Country,Coordinates
 Scottish Ale,1495,347,1,15,6,0,0,0,na,0,2010-07-23T01:30:00+05:30,Scotch Ale,British Ale,Carlyle Brewing,215 East State Street,Rockford,Illinois,United States,"42.2689, -89.0907"
-Het Kapittel Pater,1509,301,-1,-1,0,0,0,0,na,0,2010-07-23T01:30:00+05:30,na,na,Brouwerij Van Eecke,Douvieweg 2,Watou,West-Vlaanderen,Belgium,"50.8612, 2.6615"
+Het Kapittel Pater,1509,301,-1,-1,0,0,0,0,na,0,2010-07-23T01:30:00+05:30,Brown Ale - Belgian Dark,na,Brouwerij Van Eecke,Douvieweg 2,Watou,West-Vlaanderen,Belgium,"50.8612, 2.6615"
 Export Premium,1516,785,-1,-1,5,0,0,0,na,0,2010-07-23T01:30:00+05:30,na,na,Licher Privatbrauerei,In den Hardtberggrten,Lich,Hessen,Germany,"50.5208, 8.8166"
 Bee Sting Honey Ale,1527,604,3,26,6,0,0,0,na,0,2010-07-23T01:30:00+05:30,American-Style Pale Ale,North American Ale,Great Divide Brewing,2201 Arapahoe Street,Denver,Colorado,United States,"39.7539, -104.989"
 PranQster Belgian Ale,1540,919,-1,-1,8,0,0,0,"Pranqster
