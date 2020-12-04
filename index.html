@@ -42,8 +42,20 @@
             <div class="col-md-5">
                 <div id="bar"></div>
             </div>
+    <!- div class for dropdown selection -->
+    <div class = 'row'>
+        <div class='col-md-2'>
+            <div class = 'well'>
+                <h5>Select Your Brew:</h5>
+                <select id='selDataset' onchange='optionChanged(this.value)'></select>
+            </div>
 
-    <! The div for the map with brewery location-->
+        </div>
+
+    </div>
+
+
+    <!-- The div for the map with brewery location-->
         <div class = "row">
             <div class='col-md-6'>
                 <div id="map"></div>
@@ -51,18 +63,7 @@
             <div class='col-md-6'>
                 <div id="chloroMap"></div>
             </div>
-        </div>  
-        <div class = "row">
-            <div class='col-md-2'>
-                <div id="map"></div>
-            </div>
-            <div class='col-md-6'>
-                <div id="chloroMap"></div>
-            </div>
-            <div class='col-md-4'>
-                <div id="chloroMap"></div>
-            </div>
-        </div>  
+        </div>    
     <!-- div class for bubble map  -->
         <div class="row">
             <div class="col-md-6">
@@ -92,6 +93,7 @@
 
     <!-- Our JavaScript -->
     <script type="text/javascript" src="static/js/logic.js"></script>
+    <script type = 'text/javascript' src="./static/js/app.js"></script>
 
 
 

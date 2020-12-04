@@ -1,0 +1,9 @@
+Steps-
+() Create pSQL data base named beersDB (pgAdmin)
+() Create config.py file holding pgPassword (config.py)
+() Read in and clean .csv data (analysis.ipynb)
+() Add .csv files to beersDB (analysis.ipynb)
+() Make primary keys for each table (pgAdmin)
+() Run flask app (app.py)
+
+ 
