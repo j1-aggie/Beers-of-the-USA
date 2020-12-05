@@ -22,7 +22,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12 jumbotron text-center">
-                <h1>Beer From Around the World Dashboard</h1>
+                <h1>Beer From Around the World</h1>
                 <p>Use the interactive charts below to explore the dataset</p>
             </div>
         </div>
@@ -43,28 +43,28 @@
                 <div id="bar"></div>
             </div>
     <!- div class for dropdown selection -->
-    <div class = 'row'>
-        <div class='col-md-2'>
-            <div class = 'well'>
-                <h5>Select Your Brew:</h5>
-                <select id='selDataset' onchange='optionChanged(this.value)'></select>
+        <div class='row'>
+            <div class='col-md-2'>
+                <div class='well'>
+                    <h5>Select Your Brew:</h5>
+                    <select id='selDataset' onchange='optionChanged(this.value)'></select>
+                </div>
+
             </div>
 
         </div>
 
-    </div>
 
-
-    <!-- The div for the map with brewery location-->
-        <div class = "row">
+        <!-- The div for the map with brewery location-->
+        <div class="row">
             <div class='col-md-6'>
                 <div id="map"></div>
             </div>
             <div class='col-md-6'>
                 <div id="chloroMap"></div>
             </div>
-        </div>    
-    <!-- div class for bubble map  -->
+        </div>
+        <!-- div class for bubble map  -->
         <div class="row">
             <div class="col-md-6">
                 <div id="bubble"></div>
@@ -74,7 +74,7 @@
 
 
 
-    <!-- API key -->
+    <!-- config -->
     <script type="text/javascript" src="static/js/config.js"></script>
     <!-- States Data -->
     <script type="text/javascript" src="static/js/us-states.js"></script>
@@ -86,14 +86,14 @@
         crossorigin=""></script>
 
          D3 JavaScript 
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.3/d3.min.js"></script> --> 
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.3/d3.min.js"></script> -->
 
     <!--Data in json format by flask app-->
     <!--<script src="./data/open-beer-database.json"></script>-->
 
     <!-- Our JavaScript -->
     <script type="text/javascript" src="static/js/logic.js"></script>
-    <script type = 'text/javascript' src="./static/js/app.js"></script>
+    <script type='text/javascript' src="./static/js/app.js"></script>
 
 
 
