@@ -1,6 +1,6 @@
 // building charts
 function buildCharts(style){
-    d3.csv('data/open-beer-database.csv', function(data){
+    d3.json('/openbeers', function(data){
         // console.log(data)
         data.forEach((beer)=> {
             // console.log(beer)
@@ -22,12 +22,11 @@ function buildCharts(style){
 }
 buildCharts();
 
-// create an initialize page
 function init(){
     // select from the HTML ID
     var selector = d3.select('#selDataset');
     // import data
-    d3.csv('data/open-beer-database.csv', function(data){
+    d3.json('/openbeers', function(data){
     
         // create a for loop for each beer
         data.forEach((beer) => {
