@@ -45,7 +45,10 @@ d3.json(queryUrl).then(function(data){
         var longitude = latLonString.split(",")[1]
         var latlng = L.latLng(latitude, longitude);
         if (latlng != null){
-            L.marker(latlng).addTo(myMap)
+            L.marker(latlng)
+            .bindPopup(`<strong>Beer:</strong> ${e.beer.beer_name} <br>
+                        <strong>Brewery:</strong> ${e.brewery.beer_brewery_name} <br>`)
+            .addTo(myMap);
         }
         //L.marker(e.brewery.beer_brewery_coordinates).addTo(mymap);
     });    
