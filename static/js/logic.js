@@ -1,24 +1,63 @@
-// Create our map, giving it the streetmap and earthquakes layers to display on load
-var myMap = L.map("map", {
-    center: [37.09, -95.71],
-    zoom: 2.1
+// Store our API from our Flask return
+var queryUrl = "http://localhost:5000/usa";
 
+// Perform a GET request to the query Url
+d3.json(queryUrl, function (data) {
+    var breweries = L.geoJSON(data.features, {
+        onEachFeature: addPopup
+    });
+
+    createMap(breweries);
 });
 
-// Add a tile layer
-L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
-    // attribution: "Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
-    maxZoom: 18,
-    id: "streets-v11",
-    accessToken: API_KEY
-}).addTo(myMap);
+// Define a function we want to run once for each feature 
+function addPopup(feature, layer) {
+    // giving each feature a popup describing Name and City
+    return layer.bindPopup(`<h3> ${feature.properties.Name} </h3> <hr> <p> ${Date(feature.properties.City)} </p>`);
+}
 
-// // Loop through the brewery array and create one marker for each brewery and bind a popup
-// breweries.forEach(function (brewery) {
-//     L.marker(brewery.location)
-//         .bindPopup(`<h1>${brewery.name}</h1> <hr> <h3>Location: ${brewery.location} </h3>`)
-//         .addTo(myMap);
-// })
+// function to recieve a layer of markers and plot them on a map.
+function createMap(breweries) {
+
+
+    // Define streetmap and darkmap layers
+    var streetmap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+        maxZoom: 18,
+        id: "streets-v11",
+        accessToken: API_KEY
+    });
+
+    var darkmap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+        maxZoom: 18,
+        id: "dark-v10",
+        accessToken: API_KEY
+    });
+
+    // Define a baseMaps object to hold our base layers
+    var baseMaps = {
+        "Street Map": streetmap,
+        "Dark Map": darkmap
+    };
+
+    // Create overlay object to hold our overlay layer
+    var overlayMaps = {
+        "Breweries": breweries
+    };
+
+    // Create our map, giving it the streetmap and earthquakes layers to display on load
+    var myMap = L.map("map", {
+        center: [37.09, -95.71],
+        zoom: 5,
+        layers: [streetmap, breweries]
+    });
+
+    // Create a layer control
+    // Pass in our baseMaps and overlayMaps
+    // Add the layer control to the map
+    L.control.layers(baseMaps, overlayMaps, {
+        collapsed: false
+    }).addTo(myMap);
+}
 
 // chloromap
 var chloroMap = L.map("chloroMap", {
@@ -28,12 +67,12 @@ var chloroMap = L.map("chloroMap", {
 
 //colors for chloroMap ['#edf8e9','#c7e9c0','#a1d99b','#74c476','#31a354','#006d2c']
 function getColor(d) {
-    return  d > 80 ? '#006d2c' :
-            d > 50 ? '#31a354' :
+    return d > 80 ? '#006d2c' :
+        d > 50 ? '#31a354' :
             d > 20 ? '#74c476' :
-            d > 10 ? '#c7e9c0' :
-            d > 5  ? '#c7e9c0' :
-                     '#edf8e9';
+                d > 10 ? '#c7e9c0' :
+                    d > 5 ? '#c7e9c0' :
+                        '#edf8e9';
 }
 
 function style(feature) {
@@ -87,7 +126,7 @@ geojson = L.geoJson(statesData, {
     onEachFeature: onEachFeature
 }).addTo(chloroMap);
 
-var legend = L.control({position: 'bottomright'});
+var legend = L.control({ position: 'bottomright' });
 
 legend.onAdd = function (map) {
 
@@ -115,7 +154,7 @@ info.onAdd = function (map) {
 
 // method that we will use to update the control based on feature properties passed
 info.update = function (props) {
-    this._div.innerHTML = '<h4>Number of Breweries</h4>' +  (props ?
+    this._div.innerHTML = '<h4>Number of Breweries</h4>' + (props ?
         '<b>' + props.name + '</b><br />' + props.no_of_unique_breweries + ' breweries.'
         : 'Hover over a state');
 };
