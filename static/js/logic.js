@@ -1,5 +1,5 @@
 // Store our API from our Flask return
-var queryUrl = "http://localhost:5000/usa";
+var queryUrl = "/usa";
 
 // Perform a GET request to the query Url
 d3.json(queryUrl, function (data) {
@@ -13,7 +13,7 @@ d3.json(queryUrl, function (data) {
 // Define a function we want to run once for each feature 
 function addPopup(feature, layer) {
     // giving each feature a popup describing Name and City
-    return layer.bindPopup(`<h3> ${feature.properties.Name} </h3> <hr> <p> ${Date(feature.properties.City)} </p>`);
+    return layer.bindPopup(`<h3> ${feature.properties.Name} </h3> <hr> <p> ${City(feature.properties.City)} </p>`);
 }
 
 // function to recieve a layer of markers and plot them on a map.
