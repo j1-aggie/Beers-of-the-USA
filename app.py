@@ -1,3 +1,4 @@
+import pandas as pd
 import sqlalchemy
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
@@ -5,7 +6,7 @@ from sqlalchemy import create_engine, func, and_
 
 from flask import Flask, jsonify, render_template
 
-#from config import pgPassword
+from config import pgPassword
 
 
 #################################################
@@ -21,11 +22,27 @@ app.config['JSON_SORT_KEYS'] = False
 
 # Create engine
 pg_user = 'postgres'
-pg_password = 'Nathan@2020'
+pg_password = pgPassword
 db_name = 'beersDB'
 
 connection_string = f"{pg_user}:{pg_password}@localhost:5432/{db_name}"
 engine = create_engine(f'postgresql://{connection_string}')
+
+# NEW=========Creating joined table to be used in special route
+beersDF = pd.read_sql_table('beers', con=engine)
+breweriesDF = pd.read_sql_table('breweries', con=engine)
+openBeerDF = pd.read_sql_table('openBeer', con=engine)
+
+beersAndBreweries = pd.merge(left = beersDF, right = breweriesDF, how="inner", left_on="brewery_id", right_on = "id")
+beersAndBreweries = beersAndBreweries[["name_x", "style", "name_y", "abv", "ibu"]]
+beersAndBreweries = beersAndBreweries.rename(columns = {"name_x": "beer",
+                                                       "name_y": "brewery"})
+breweryLocations = openBeerDF[["Brewer", "Address", "City", "State", "Country", "Coordinates"]]
+
+usaDF = pd.merge(left = breweryLocations, right = beersAndBreweries, how="inner", left_on="Brewer", right_on = "brewery")
+usaDF = usaDF.dropna().drop_duplicates()
+
+# end NEW=========================
 
 # reflect an existing database into a new model
 Base = automap_base()
@@ -196,6 +213,44 @@ def recipes():
     # Return the JSON representation of the dictionary
     return jsonify(summary_list)
 
+
+@app.route("/usa")
+def usa():
+    # """Return a list of candidates that have ran for president"""
+    # session = Session(engine)
+
+    # results = session.query(Breweries).all()
+
+    # # close the session to end the communication with the database
+    # session.close()
+
+    # # Convert the query results to a dictionary
+    summary_list = []
+    for i, row in usaDF.iterrows():
+        summary_dict = {}
+        beer_dict = {}
+        brewery_dict = {}
+
+        beer_dict["beer_name"] = row["beer"]
+        beer_dict["beer_style"] = row["style"]
+        beer_dict["beer_abv"] = row["abv"]
+        beer_dict["beer_ibu"] = row["ibu"]
+
+        brewery_dict["beer_brewery_name"] = row["Brewer"]
+        brewery_dict["beer_brewery_address"] = row["Address"]
+        brewery_dict["beer_brewery_city"] = row["City"]
+        brewery_dict["beer_brewery_state"] = row["State"]
+        brewery_dict["beer_brewery_country"] = row["Country"]
+        brewery_dict["beer_brewery_coordinates"] = row["Coordinates"]
+
+        summary_dict["beer"] = beer_dict
+        summary_dict["brewery"] = brewery_dict
+       
+        summary_list.append(summary_dict)
+
+    # Return the JSON representation of the dictionary
+    return jsonify(summary_list)
+
 # @app.route("/summary")
 # def summary():
 #     """Return a list of candidates that have ran for president"""
@@ -221,4 +276,4 @@ def recipes():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5000)
