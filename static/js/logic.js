@@ -1,63 +1,105 @@
 // Store our API from our Flask return
-var queryUrl = "http://localhost:5000/usa";
+var queryUrl = "/usa";
 
-// Perform a GET request to the query Url
-d3.json(queryUrl, function (data) {
-    var breweries = L.geoJSON(data.features, {
-        onEachFeature: addPopup
+//Perform a GET request to the query Url
+// d3.json(queryUrl, function (data) {
+//     var breweries = L.geoJSON(data.features, {
+//         onEachFeature: addPopup
+//     });
+
+//     createMap(breweries);
+// });
+
+d3.json(queryUrl).then(function(data){
+    //console.log(data);
+    var myMap = L.map("map", {
+        center: [37.09, -95.71],
+        zoom: 4
     });
 
-    createMap(breweries);
-});
+    // var baseMaps = {
+    //     "Street Map": streetmap,
+    //     "Dark Map": darkmap
+    // };
 
-// Define a function we want to run once for each feature 
-function addPopup(feature, layer) {
-    // giving each feature a popup describing Name and City
-    return layer.bindPopup(`<h3> ${feature.properties.Name} </h3> <hr> <p> ${Date(feature.properties.City)} </p>`);
-}
-
-// function to recieve a layer of markers and plot them on a map.
-function createMap(breweries) {
-
-
-    // Define streetmap and darkmap layers
-    var streetmap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+    L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
         maxZoom: 18,
         id: "streets-v11",
         accessToken: API_KEY
-    });
-
-    var darkmap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
-        maxZoom: 18,
-        id: "dark-v10",
-        accessToken: API_KEY
-    });
-
-    // Define a baseMaps object to hold our base layers
-    var baseMaps = {
-        "Street Map": streetmap,
-        "Dark Map": darkmap
-    };
-
-    // Create overlay object to hold our overlay layer
-    var overlayMaps = {
-        "Breweries": breweries
-    };
-
-    // Create our map, giving it the streetmap and earthquakes layers to display on load
-    var myMap = L.map("map", {
-        center: [37.09, -95.71],
-        zoom: 5,
-        layers: [streetmap, breweries]
-    });
-
-    // Create a layer control
-    // Pass in our baseMaps and overlayMaps
-    // Add the layer control to the map
-    L.control.layers(baseMaps, overlayMaps, {
-        collapsed: false
     }).addTo(myMap);
-}
+
+    // var darkmap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+    //     maxZoom: 18,
+    //     id: "dark-v10",
+    //     accessToken: API_KEY
+    // });
+    
+
+    //iterate through data and add marker for each coordinate when coordinates != null
+    data.forEach(e => {
+        var latLonString = e.brewery.beer_brewery_coordinates;
+        
+        //remove the space and rejoin the array into a single string
+        latLonString = latLonString.split(" ").join("");
+        var latitude = latLonString.split(",")[0]
+        var longitude = latLonString.split(",")[1]
+        var latlng = L.latLng(latitude, longitude);
+        if (latlng != null){
+            L.marker(latlng).addTo(myMap)
+        }
+        //L.marker(e.brewery.beer_brewery_coordinates).addTo(mymap);
+    });    
+})
+
+// Define a function we want to run once for each feature 
+// function addPopup(feature, layer) {
+//     // giving each feature a popup describing Name and City
+//     return layer.bindPopup(`<h3> ${feature.properties.Name} </h3> <hr> <p> ${Date(feature.properties.City)} </p>`);
+// }
+
+
+
+// function to recieve a layer of markers and plot them on a map.
+// function createMap() {
+
+//     // Define streetmap and darkmap layers
+//     var streetmap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+//         maxZoom: 18,
+//         id: "streets-v11",
+//         accessToken: API_KEY
+//     });
+
+//     var darkmap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+//         maxZoom: 18,
+//         id: "dark-v10",
+//         accessToken: API_KEY
+//     });
+
+//     // Define a baseMaps object to hold our base layers
+//     var baseMaps = {
+//         "Street Map": streetmap,
+//         "Dark Map": darkmap
+//     };
+
+//     // Create overlay object to hold our overlay layer
+//     // var overlayMaps = {
+//     //     "Breweries": breweries
+//     // };
+
+//     // Create our map
+//     var myMap = L.map("map", {
+//         center: [37.09, -95.71],
+//         zoom: 4,
+//         layers: [baseMaps]
+//     });
+
+//     // Create a layer control
+//     // Pass in our baseMaps and overlayMaps
+//     // Add the layer control to the map
+//     L.control.layers(baseMaps, overlayMaps, {
+//         collapsed: false
+//     }).addTo(myMap);
+// }
 
 // chloromap
 var chloroMap = L.map("chloroMap", {
@@ -70,7 +112,7 @@ function getColor(d) {
     return d > 80 ? '#006d2c' :
         d > 50 ? '#31a354' :
             d > 20 ? '#74c476' :
-                d > 10 ? '#c7e9c0' :
+                d > 10 ? '#a1d99b' :
                     d > 5 ? '#c7e9c0' :
                         '#edf8e9';
 }
@@ -163,13 +205,9 @@ info.addTo(chloroMap);
 
 legend.addTo(chloroMap);
 
-
-
-
-
 L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
     id: 'light-v9',
-    // attribution: 'Chad Dubiel',
+    // attribution: ...
     tileSize: 512,
     zoomOffset: -1,
     accessToken: API_KEY
