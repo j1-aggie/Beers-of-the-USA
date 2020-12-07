@@ -20,4 +20,4 @@
 Our project will be focused on querying data from a brewery dataset (csv) so that users can query a style of beer and pull up the mixture to see how the beer is made. The user will be able to filter down to a type of beer along with corresponding visuals that project quantative measurments that distinguish the beer from other beers.  
 
 ## Datasets:
-https://www.kaggle.com/jtrofe/beer-recipes
+https://www.kaggle.com/ritesaluja/the-beer
