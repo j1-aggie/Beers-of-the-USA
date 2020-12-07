@@ -222,5 +222,5 @@ function createMap(breweries) {
         tileSize: 512,
         zoomOffset: -1,
         accessToken: API_KEY
-    }).addTo(chloroMap);
+        }).addTo(chloroMap);
 }
