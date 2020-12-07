@@ -3,7 +3,7 @@ function buildMaps(style) {
     d3.json('/usa').then(function (data) {
         // console.log(data)
         data.forEach((beer) => {
-            console.log(beer)
+            //console.log(beer)
             var styleType = beer.beer.beer_style;
             // console.log(styleType)
             var styleABV = beer.beer.beer_abv;
@@ -17,14 +17,43 @@ function buildMaps(style) {
             var city = beer.brewery.beer_brewery_city
             // console.log(city)
             var latitude = beer.brewery.beer_brewery_coordinates;
-            console.log(latitude)
+            //console.log(latitude)
         })
 
         // ADD CODE HERE TO PLOT MARKERS ON THE MAP
+        // var myMap = L.map("map", {
+        //     center: [37.09, -95.71],
+        //     zoom: 4
+        // });
+        
+        // L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+        //     maxZoom: 18,
+        //     id: "streets-v11",
+        //     accessToken: API_KEY
+        // }).addTo(myMap);
 
+        //iterate through data and add marker for each coordinate when coordinates != null and when style ===
+        data.forEach(e => {
+            var latLonString = e.brewery.beer_brewery_coordinates;
+            //console.log(latLonString);
 
-    })
+            //remove the space and rejoin the array into a single string
+            latLonString = latLonString.split(" ").join("");
+            var latitude = latLonString.split(",")[0]
+            var longitude = latLonString.split(",")[1]
+            var latlng = L.latLng(latitude, longitude);
+            if (latlng != null) {
+                L.marker(latlng)
+                    .bindPopup(`<strong>Beer:</strong> ${e.beer.beer_name} <br>
+                        <strong>Brewery:</strong> ${e.brewery.beer_brewery_name} <br>`)
+                    .addTo(myMap);
+            }            
+        });
+
+    });
+
 }
+
 buildMaps();
 
 // building charts to pull data for each style of beer 
@@ -84,19 +113,29 @@ function init() {
         // use first name from list to build initial plots
         const firstStyle = styleType[0]
         buildCharts(firstStyle);
-        buildMaps(firstStyle)
+        buildMaps(firstStyle);
 
-
-
+        
     });
 
+    
 
 }
 
 function optionChanged(newStyle) {
-    buildMaps(newStyle)
     buildMaps(newStyle);
 }
 
+//build first maps
+var myMap = L.map("map", {
+    center: [37.09, -95.71],
+    zoom: 4
+});
+
+L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+    maxZoom: 18,
+    id: "streets-v11",
+    accessToken: API_KEY
+}).addTo(myMap);
 
 init();
