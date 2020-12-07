@@ -223,6 +223,4 @@ function createMap(breweries) {
         zoomOffset: -1,
         accessToken: API_KEY
     }).addTo(chloroMap);
-
-
-
+}
