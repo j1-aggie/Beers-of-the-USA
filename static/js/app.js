@@ -3,6 +3,9 @@ var markerLayerGroup=L.layerGroup();
 function buildMaps(style) {
     d3.json('/usa').then(function (data) {
         // console.log(data)
+        
+        
+
         data.forEach((beer) => {
             //console.log(beer)
             var styleType = beer.beer.beer_style;
@@ -21,6 +24,10 @@ function buildMaps(style) {
             //console.log(latitude)
         })
 
+        console.log(style);
+        var filteredData = data.filter(beer => beer.beer.beer_style === style);
+        console.log(filteredData);
+
         // ADD CODE HERE TO PLOT MARKERS ON THE MAP
         // var myMap = L.map("map", {
         //     center: [37.09, -95.71],
@@ -35,7 +42,30 @@ function buildMaps(style) {
 
         //iterate through data and add marker for each coordinate when coordinates != null and when style ===
         markerLayerGroup.clearLayers()
-        data.forEach(e => {
+        if (style) {
+            filteredData.forEach(e => {
+                var latLonString = e.brewery.beer_brewery_coordinates;
+                //console.log(latLonString);
+    
+                //remove the space and rejoin the array into a single string
+                latLonString = latLonString.split(" ").join("");
+                
+                // remove Math.round -> 
+                var latitude = +(latLonString.split(",")[0])
+                var longitude = +(latLonString.split(",")[1])
+                // console.log(latitude, longitude)
+                if (latitude & longitude) {
+                    var latlng = L.latLng(latitude, longitude);
+                    markerLayerGroup.addLayer(L.marker(latlng)
+                            .bindPopup(`<strong>Beer:</strong> ${e.beer.beer_name} <br>
+                                <strong>Brewery:</strong> ${e.brewery.beer_brewery_name} <br>`)
+                        )
+                           
+                    }    
+                });
+        }
+        else {
+            data.forEach(e => {
             var latLonString = e.brewery.beer_brewery_coordinates;
             //console.log(latLonString);
 
@@ -43,19 +73,19 @@ function buildMaps(style) {
             latLonString = latLonString.split(" ").join("");
             
             // remove Math.round -> 
-            var latitude = +(latLonString.split(",")[0])*Math.round(Math.random(), 1)
-            var longitude = +(latLonString.split(",")[1])*Math.round(Math.random(), 1)
+            var latitude = +(latLonString.split(",")[0])
+            var longitude = +(latLonString.split(",")[1])
             // console.log(latitude, longitude)
             if (latitude & longitude) {
                 var latlng = L.latLng(latitude, longitude);
-                //if (latlng != null) {
-                    markerLayerGroup.addLayer(L.marker(latlng)
+                markerLayerGroup.addLayer(L.marker(latlng)
                         .bindPopup(`<strong>Beer:</strong> ${e.beer.beer_name} <br>
                             <strong>Brewery:</strong> ${e.brewery.beer_brewery_name} <br>`)
                     )
-                //}        
-            }    
-        });
+                       
+                }    
+            });
+        };
         //markerLayerGroup=L.layerGroup(markerLayer);
         markerLayerGroup.addTo(myMap);
         console.log('new markers');

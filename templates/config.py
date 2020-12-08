@@ -1,3 +1,3 @@
 #password
 user = "user"
-pgPassword = "Nathan@2020"
+pgPassword = ""
