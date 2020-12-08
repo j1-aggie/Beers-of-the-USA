@@ -1,2 +1,3 @@
 #password
-pgPassword = "11241988"
+user = "user"
+pgPassword = "Nathan@2020"
