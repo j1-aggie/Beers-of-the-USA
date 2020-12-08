@@ -1,3 +1,4 @@
+var markerLayerGroup=L.layerGroup();
 // building maps to plot data to the map
 function buildMaps(style) {
     d3.json('/usa').then(function (data) {
@@ -33,26 +34,33 @@ function buildMaps(style) {
         // }).addTo(myMap);
 
         //iterate through data and add marker for each coordinate when coordinates != null and when style ===
+        markerLayerGroup.clearLayers()
         data.forEach(e => {
             var latLonString = e.brewery.beer_brewery_coordinates;
             //console.log(latLonString);
 
             //remove the space and rejoin the array into a single string
             latLonString = latLonString.split(" ").join("");
-            var latitude = latLonString.split(",")[0]
-            var longitude = latLonString.split(",")[1]
-            var latlng = L.latLng(latitude, longitude);
-            if (latlng != null) {
-                L.marker(latlng)
-                    .bindPopup(`<strong>Beer:</strong> ${e.beer.beer_name} <br>
-                        <strong>Brewery:</strong> ${e.brewery.beer_brewery_name} <br>`)
-                    .addTo(myMap);
-            }            
+            
+            // remove Math.round -> 
+            var latitude = +(latLonString.split(",")[0])*Math.round(Math.random(), 1)
+            var longitude = +(latLonString.split(",")[1])*Math.round(Math.random(), 1)
+            // console.log(latitude, longitude)
+            if (latitude & longitude) {
+                var latlng = L.latLng(latitude, longitude);
+                //if (latlng != null) {
+                    markerLayerGroup.addLayer(L.marker(latlng)
+                        .bindPopup(`<strong>Beer:</strong> ${e.beer.beer_name} <br>
+                            <strong>Brewery:</strong> ${e.brewery.beer_brewery_name} <br>`)
+                    )
+                //}        
+            }    
         });
-
+        //markerLayerGroup=L.layerGroup(markerLayer);
+        markerLayerGroup.addTo(myMap);
+        console.log('new markers');
     });
-
-}
+};
 
 buildMaps();
 
