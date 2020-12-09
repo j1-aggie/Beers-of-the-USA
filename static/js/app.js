@@ -162,6 +162,7 @@ function init() {
 
 function optionChanged(newStyle) {
     buildMaps(newStyle);
+    updateScatter(newStyle)
 }
 
 //build first maps
