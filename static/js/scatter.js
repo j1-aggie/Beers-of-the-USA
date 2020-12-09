@@ -48,6 +48,7 @@ var chartGroup = svg.append("g")
 // Import, format, and chart data
 function updateScatter(type) {
     d3.json('/usa').then(function (data) {
+        // var type = 'Gose'
         // parse integer values
         data.forEach(function (d) {
             d.beer.beer_abv = +d.beer.beer_abv;
@@ -111,14 +112,14 @@ function updateScatter(type) {
             .attr("cx", d => xLinearScale(d.beer.beer_abv))
             .attr("cy", d => yLinearScale(d.beer.beer_ibu))
             .attr("r", function (d) {
-                if (d.beer.beer_style == style) {
+                if (d.beer.beer_style == type) {
                     return 15;
                 } else {
                     return 5;
                 }
             })
             .attr("fill", function (d) {
-                if (d.beer.beer_style == style) {
+                if (d.beer.beer_style == type) {
                     return "red";
                 } else {
                     return "blue";
@@ -163,3 +164,4 @@ function updateScatter(type) {
     });
 
 }
+updateScatter();

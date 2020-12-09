@@ -6,7 +6,9 @@ var queryUrl = "/usa";
 var chloroMap = L.map("chloroMap", {
     center: [37.8, -96],
     zoom: 4
-});
+}).setView([37.09, -95.71], 2.5);
+chloroMap.options.minZoom = 4;
+chloroMap.options.maxZoom = 14;
 
 //colors for chloroMap ['#edf8e9','#c7e9c0','#a1d99b','#74c476','#31a354','#006d2c']
 function getColor(d) {
