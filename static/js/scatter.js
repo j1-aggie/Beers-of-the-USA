@@ -48,7 +48,9 @@ var chartGroup = svg.append("g")
 // Import, format, and chart data
 function updateScatter(type) {
     d3.json('/usa').then(function (data) {
-        // var type = 'Gose'
+            
+        // var type = 'Pumpkin Ale';
+        console.log(type);
         // parse integer values
         data.forEach(function (d) {
             d.beer.beer_abv = +d.beer.beer_abv;
@@ -104,6 +106,7 @@ function updateScatter(type) {
             .classed("active", true)
             .text("International Bitterness Units");
 
+        chartGroup.selectAll("circle").remove();
         // create and add circles to chart
         var circlesGroup = chartGroup.selectAll("circle")
             .data(data)
