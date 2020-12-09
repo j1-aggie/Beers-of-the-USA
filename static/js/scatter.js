@@ -48,7 +48,7 @@ var chartGroup = svg.append("g")
 // Import, format, and chart data
 function updateScatter(type) {
     d3.json('/usa').then(function (data) {
-            
+
         // var type = 'Pumpkin Ale';
         console.log(type);
         // parse integer values
@@ -106,6 +106,17 @@ function updateScatter(type) {
             .classed("active", true)
             .text("International Bitterness Units");
 
+        // append a chart Title
+        var titleGroup = chartGroup.append("g")
+            .attr("transform", `translate(${chartWidth / 2}, -30)`);
+
+        var titleLabel = titleGroup.append("text")
+            .attr("x", 0)
+            .attr("y", 20)
+            .attr("value", "title") // value to grab if event listener
+            .classed("titleLabel", true)
+            .text("ABV vs. IBU");
+
         chartGroup.selectAll("circle").remove();
         // create and add circles to chart
         var circlesGroup = chartGroup.selectAll("circle")
@@ -115,20 +126,26 @@ function updateScatter(type) {
             .attr("cx", d => xLinearScale(d.beer.beer_abv))
             .attr("cy", d => yLinearScale(d.beer.beer_ibu))
             .attr("r", function (d) {
-                if (d.beer.beer_style == type) {
-                    return 15;
+                if (d.beer.beer_style == style) {
+                    return 10;
                 } else {
                     return 5;
                 }
             })
             .attr("fill", function (d) {
-                if (d.beer.beer_style == type) {
+                if (d.beer.beer_style == style) {
                     return "red";
                 } else {
                     return "blue";
                 }
             })
-            .attr("opacity", ".5")
+            .attr("opacity", function (d) {
+                if (d.beer.beer_style == style) {
+                    return "0.75";
+                } else {
+                    return "0.25";
+                }
+            })
             .classed("beerCircle", true);
 
         // create Tool tip
@@ -151,6 +168,10 @@ function updateScatter(type) {
             });
 
         chartGroup.call(toolTip);
+
+        // circlesGroup.on("click", function (d) {
+        //     toolTip.show(d, this);
+        // });
 
         circlesGroup.on("mouseover", function (d) {
             toolTip.show(d, this);
