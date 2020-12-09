@@ -1,0 +1,65 @@
+﻿-- Exported from QuickDBD: https://www.quickdatabasediagrams.com/
+-- Link to schema: https://app.quickdatabasediagrams.com/#/d/JpSRon
+-- NOTE! If you have used non-SQL datatypes in your design, you will have to change these here.
+
+
+CREATE TABLE "beers" (
+    "abv" VARCHAR(30)   NOT NULL,
+    "ibu" VARCHAR(300)   NOT NULL,
+    "id" VARCHAR(1000)   NOT NULL,
+    "name" VARCHAR(1000)   NOT NULL,
+    "style" VARCHAR(1000)   NOT NULL,
+    "brewery_id" VARCHAR(1000)   NOT NULL,
+    "ounces" VARCHAR(1000)   NOT NULL,
+    CONSTRAINT "pk_beers" PRIMARY KEY (
+        "id"
+     )
+);
+
+CREATE TABLE "breweries" (
+    "id" VARCHAR(30)   NOT NULL,
+    "name" VARCHAR(1000)   NOT NULL,
+    "city" VARCHAR(1000)   NOT NULL,
+    "state" VARCHAR(1000)   NOT NULL,
+    CONSTRAINT "pk_breweries" PRIMARY KEY (
+        "id"
+     )
+);
+
+CREATE TABLE "openBeer" (
+    "name" VARCHAR(1000)   NOT NULL,
+    "id" VARCHAR(1000)   NOT NULL,
+    "Alchohol_By_Vol" VARCHAR(1000)   NOT NULL,
+    "International_Bitterness_Units" VARCHAR(1000)   NOT NULL,
+    "Style" VARCHAR(1000)   NOT NULL,
+    "style_id" VARCHAR(1000)   NOT NULL,
+    "Category" VARCHAR(1000)   NOT NULL,
+    "Brewer" VARCHAR(1000)   NOT NULL,
+    "brewer_id" VARCHAR(1000)   NOT NULL,
+    "Address" VARCHAR(1000)   NOT NULL,
+    "City" VARCHAR(1000)   NOT NULL,
+    "State" VARCHAR(1000)   NOT NULL,
+    "Country" VARCHAR(1000)   NOT NULL,
+    "Coordinates" VARCHAR(1000)   NOT NULL,
+    CONSTRAINT "pk_openBeer" PRIMARY KEY (
+        "id"
+     )
+);
+
+CREATE TABLE "recipes" (
+    "BeerID" VARCHAR(1000)   NOT NULL,
+    "Name" VARCHAR(1000)   NOT NULL,
+    "Style" VARCHAR(1000)   NOT NULL,
+    "StyleID" VARCHAR(1000)   NOT NULL,
+    "OG" VARCHAR(1000)   NOT NULL,
+    "FG" VARCHAR(1000)   NOT NULL,
+    "ABV" VARCHAR(1000)   NOT NULL,
+    "IBU" VARCHAR(1000)   NOT NULL,
+    "Color" VARCHAR(1000)   NOT NULL,
+    "Efficiency" VARCHAR(1000)   NOT NULL,
+    "BrewMethod" VARCHAR(1000)   NOT NULL,
+    CONSTRAINT "pk_recipes" PRIMARY KEY (
+        "BeerID"
+     )
+);
+
