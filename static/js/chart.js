@@ -4,13 +4,13 @@ var myChart = new Chart(ctx, {
     type: "radar",
     data: {
 
-        labels: ["International_Bitterness_Units", "Alcohol_By_Vol", "BoilTime", "PrimaryTemp", "PrimingAmount", "ounces", "abv"],
+        labels: ["IBU", "PitchRate", "BoilTime", "PrimaryTemp", "PrimingAmount", "SugarScale", "ABV"],
         datasets: [{
-            label: 'country with highest beer production',
+            label: 'PrimingAmount',
 
             // Load Data from csv data files
 
-            data: ['beers.csv'],
+            data: ['recipedata.csv'],
             // Choose color
             backgroundcolor: 'rgba(255, 99, 132, 2)',
 
@@ -19,11 +19,11 @@ var myChart = new Chart(ctx, {
             borderWidth: 1
         },
         {
-            label: 'beer with the highest boil time',
+            label: 'beer with the highest IBU',
 
             // Load Data from csv data files
 
-            data: ['breweries.csv'],
+            data: ['recipedata.csv'],
             // Choose color
             backgroundcolor: 'rgba(255, 99, 132, 2)',
 
@@ -32,7 +32,7 @@ var myChart = new Chart(ctx, {
             borderWidth: 1
         },
         {
-            label: ' best style beer ',
+            label: 'beer with highest BoilTime',
 
             // Load Data from csv data files
 
@@ -45,11 +45,11 @@ var myChart = new Chart(ctx, {
             borderWidth: 1
         },
         {
-            label: 'state with the highest production',
+            label: 'Beer with highest SugarScale',
 
             // Load Data from csv data files
 
-            data: ['open-beer-database.csv'],
+            data: ['recipedata.csv'],
             // Choose color
             backgroundcolor: 'rgba(255, 99, 132, 2)',
 
