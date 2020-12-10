@@ -188,4 +188,4 @@ function updateScatter(type) {
     });
 
 }
-updateScatter();
+updateScatter("Winter Warmer");
