@@ -1,73 +1,44 @@
-var ctx = document.getElementById("myChart");
-var myChart = new Chart(ctx, {
+function buildRadar(beer) {
+    d3.json('/recipes').then(function (data) {
+        
+        console.log(data[0]);
 
-    type: "radar",
-    data: {
+        var abvMean = d3.mean(data, d => d.beer_abv);
+        var ibuMean = d3.mean(data, d => d.beer_ibu);
+        var colMean = d3.mean(data, d => d.beer_color);
+        var effMean = d3.mean(data, d => d.beer_efficiency);
+        var ogMean = d3.mean(data, d => d.beer_og);
+        var fgMean = d3.mean(data, d => d.beer_fg);
 
-        labels: ["IBU", "PitchRate", "BoilTime", "PrimaryTemp", "PrimingAmount", "SugarScale", "ABV"],
-        datasets: [{
-            label: 'PrimingAmount',
+        dataMeans = [abvMean, ibuMean, colMean, effMean, ogMean, fgMean]
+        console.log(dataMeans)
 
-            // Load Data from csv data files
-
-            data: ['recipedata.csv'],
-            // Choose color
-            backgroundcolor: 'rgba(255, 99, 132, 2)',
-
-            bordercolor: ['rgba(255,99,132,1)',
-            ],
-            borderWidth: 1
-        },
-        {
-            label: 'beer with the highest IBU',
-
-            // Load Data from csv data files
-
-            data: ['recipedata.csv'],
-            // Choose color
-            backgroundcolor: 'rgba(255, 99, 132, 2)',
-
-            bordercolor: ['rgba(255,99,132,1)',
-            ],
-            borderWidth: 1
-        },
-        {
-            label: 'beer with highest BoilTime',
-
-            // Load Data from csv data files
-
-            data: ['recipeData.csv'],
-            // Choose color
-            backgroundcolor: 'rgba(255, 99, 132, 2)',
-
-            bordercolor: ['rgba(255,99,132,1)',
-            ],
-            borderWidth: 1
-        },
-        {
-            label: 'Beer with highest SugarScale',
-
-            // Load Data from csv data files
-
-            data: ['recipedata.csv'],
-            // Choose color
-            backgroundcolor: 'rgba(255, 99, 132, 2)',
-
-            bordercolor: ['rgba(255,99,132,1)',
-            ],
-            borderWidth: 1
-        }
-        ]
-    },
-
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true
+        new Chart(document.getElementById("radarChart"), {
+            type: 'radar',
+            data: {
+              labels: ["ABV", "IBU", "Color", "Efficiency", "OG", "FG"],
+              datasets: [
+                {
+                  label: "Means",
+                  fill: true,
+                  backgroundColor: "rgba(179,181,198,0.2)",
+                  borderColor: "rgba(179,181,198,1)",
+                  pointBorderColor: "#fff",
+                  pointBackgroundColor: "rgba(179,181,198,1)",
+                  data: dataMeans
                 }
-            }]
-        }
-    }
-});
+              ]
+            },
+            options: {
+              title: {
+                display: true,
+                text: 'Values for Means Across All Recipes'
+              }
+            }
+        });
 
+               
+    });
+};
+
+buildRadar();
