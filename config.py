@@ -1,3 +1,3 @@
 #password
 user = "user"
-pgPassword = 'postgres'
+pgPassword = 'YOUR PASSWORD HERE'

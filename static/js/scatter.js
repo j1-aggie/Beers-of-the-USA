@@ -126,21 +126,21 @@ function updateScatter(type) {
             .attr("cx", d => xLinearScale(d.beer.beer_abv))
             .attr("cy", d => yLinearScale(d.beer.beer_ibu))
             .attr("r", function (d) {
-                if (d.beer.beer_style == style) {
+                if (d.beer.beer_style == type) {
                     return 10;
                 } else {
                     return 5;
                 }
             })
             .attr("fill", function (d) {
-                if (d.beer.beer_style == style) {
+                if (d.beer.beer_style == type) {
                     return "red";
                 } else {
                     return "blue";
                 }
             })
             .attr("opacity", function (d) {
-                if (d.beer.beer_style == style) {
+                if (d.beer.beer_style == type) {
                     return "0.75";
                 } else {
                     return "0.25";
