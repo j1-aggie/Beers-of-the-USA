@@ -24,9 +24,9 @@ function buildMaps(style) {
             //console.log(latitude)
         })
 
-        console.log(style);
+        //console.log(style);
         var filteredData = data.filter(beer => beer.beer.beer_style === style);
-        console.log(filteredData);
+        //console.log(filteredData);
 
         // ADD CODE HERE TO PLOT MARKERS ON THE MAP
         // var myMap = L.map("map", {

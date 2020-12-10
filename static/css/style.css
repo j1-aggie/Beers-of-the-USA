@@ -20,6 +20,27 @@ body {
   width: 100%;  /* This means "100% of the width of its container", the .col-md-6 */
 }
 
+#bubble {
+  position: relative;
+  border: 1px solid black;
+  border-radius: 8px;
+  height: 110%;  /* or as desired */
+  width: 100%;  /* This means "100% of the width of its container", the .col-md-6 */
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding: 20px;
+}
+
+#radarChart {
+  position: relative;
+  border: 1px solid black;
+  border-radius: 8px;
+  height: 400px;  /* or as desired */
+  width: 60%;  /* This means "100% of the width of its container", the .col-md-6 */
+}
+
+
+
 body,
 html {
   height: 100%;
@@ -51,4 +72,19 @@ html {
 
 .well {
   width: 250%
+}
+
+.scatterTip {	
+  position: absolute;	
+  text-align: center;		
+  vertical-align: middle;
+  width: 210px;					
+  height: 110px;					
+  padding: 8px;				
+  font: 12px sans-serif;		
+  background: black;	
+  border: 0px;		
+  border-radius: 8px;			
+  pointer-events: none;
+  color: white;			
 }
