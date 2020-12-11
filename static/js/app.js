@@ -3,8 +3,9 @@ var markerLayerGroup=L.layerGroup();
 function buildMaps(style) {
     d3.json('/usa').then(function (data) {
         // console.log(data)
-        
-        
+        var breweries = [];
+        var popupContent = [];
+        var markers = [];        
 
         data.forEach((beer) => {
             //console.log(beer)
@@ -43,6 +44,9 @@ function buildMaps(style) {
         //iterate through data and add marker for each coordinate when coordinates != null and when style ===
         markerLayerGroup.clearLayers()
         if (style) {
+            breweries = [];
+            popupContent = [];
+            markers = [];
             filteredData.forEach(e => {
                 var latLonString = e.brewery.beer_brewery_coordinates;
                 //console.log(latLonString);
@@ -53,16 +57,39 @@ function buildMaps(style) {
                 // remove Math.round -> 
                 var latitude = +(latLonString.split(",")[0])
                 var longitude = +(latLonString.split(",")[1])
+
                 // console.log(latitude, longitude)
-                if (latitude & longitude) {
-                    var latlng = L.latLng(latitude, longitude);
-                    markerLayerGroup.addLayer(L.marker(latlng)
-                            .bindPopup(`<strong>Beer:</strong> ${e.beer.beer_name} <br>
-                                <strong>Brewery:</strong> ${e.brewery.beer_brewery_name} <br>`)
+
+                //check to see if this brewery's beer is in our array, if not then add the name, latlon, and popupContent
+                console.log(e.brewery.beer_brewery_name)
+                if (breweries.indexOf(e.brewery.beer_brewery_name) === -1) {                    
+                    if (latitude & longitude) {
+                        breweries.push(e.brewery.beer_brewery_name)
+                        var latlng = L.latLng(latitude, longitude);
+                        markers.push(L.marker(latlng))
+                        popupContent.push(`<strong>Brewery:</strong> ${e.brewery.beer_brewery_name} <br> 
+                                            <strong>Beer:</strong> ${e.beer.beer_name} <br>`                                                                                                
                         )
-                           
-                    }    
-                });
+                    }  
+                }
+                //this runs if the brewery is in our arrays, it 
+                else {
+                    breweryIndex = breweries.indexOf(e.brewery.beer_brewery_name)
+                    popupContent[breweryIndex] += `<strong>Beer:</strong> ${e.beer.beer_name} <br>`
+                }
+                console.log(markers);
+                console.log(breweries);
+                console.log(popupContent);
+
+                for (i = 0; i < markers.length; i++) {
+                    markerLayerGroup.addLayer(markers[i]
+                        .bindPopup(popupContent[i]))
+                }
+
+
+
+
+            });
         }
         else {
             data.forEach(e => {
