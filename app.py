@@ -25,7 +25,7 @@ pg_user = 'postgres'
 pg_password = pgPassword
 db_name = 'beersDB'
 
-connection_string = f"postgres:11241988@localhost:5432/{db_name}"
+connection_string = f"{postgres}:pgPassword@localhost:5432/{db_name}"
 engine = create_engine(f'postgresql://{connection_string}')
 
 # NEW=========Creating joined table to be used in special route
