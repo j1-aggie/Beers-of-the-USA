@@ -78,13 +78,13 @@ html {
   position: absolute;	
   text-align: center;		
   vertical-align: middle;
-  width: 210px;					
-  height: 110px;					
+  width: 230px;					
+  height: 120px;					
   padding: 8px;				
   font: 12px sans-serif;		
-  background: black;	
+  background:lightgray;	
   border: 0px;		
   border-radius: 8px;			
   pointer-events: none;
-  color: white;			
+  color: black;			
 }
