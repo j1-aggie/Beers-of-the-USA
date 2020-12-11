@@ -22,7 +22,7 @@ var svgWidth = 960;
 var svgHeight = 500;
 
 var margin = {
-    top: 20,
+    top: 100,
     right: 60,
     bottom: 80,
     left: 100
@@ -85,7 +85,7 @@ function updateScatter(type) {
 
         // append chart axis labels to chart
         var labelsGroupX = chartGroup.append("g")
-            .attr("transform", `translate(${chartWidth / 2}, ${chartHeight + 20})`);
+            .attr("transform", `translate(${chartWidth / 2}, ${chartHeight + 30})`);
 
         var abvLabel = labelsGroupX.append("text")
             .attr("x", 0)
@@ -108,7 +108,7 @@ function updateScatter(type) {
 
         // append a chart Title
         var titleGroup = chartGroup.append("g")
-            .attr("transform", `translate(${chartWidth / 2}, -30)`);
+            .attr("transform", `translate(${chartWidth / 2}, -40)`);
 
         var titleLabel = titleGroup.append("text")
             .attr("x", 0)
@@ -188,4 +188,4 @@ function updateScatter(type) {
     });
 
 }
-updateScatter("Winter Warmer");
+updateScatter("American Adjunct Lager");
