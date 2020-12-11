@@ -188,4 +188,4 @@ function updateScatter(type) {
     });
 
 }
-updateScatter("Winter Warmer");
+updateScatter("American Adjunct Lager");
