@@ -2,16 +2,23 @@
 function scatterTipHTML(data) {
     var beerName = data.beer.beer_name;
     var beerStyle = data.beer.beer_style;
-    var breweryName = data.brewery.brewery_name;
+    var breweryName = data.brewery.beer_brewery_name;
+    var breweryState = data.brewery.beer_brewery_state;
     var htmlString = `
     <strong>${beerName}</strong>
     <hr>
     Style: ${beerStyle}
     <br>
     Brewery: ${breweryName}
+    <br>
+    State: ${breweryState}
     `;
 
     return htmlString
+}
+
+function getRadius(data) {
+
 }
 
 
@@ -46,11 +53,11 @@ var chartGroup = svg.append("g")
 
 // ==================== Pull and Use Data =========================
 // Import, format, and chart data
-function updateScatter(type) {
+function updateScatter(type, state) {
     d3.json('/usa').then(function (data) {
 
         // var type = 'Pumpkin Ale';
-        console.log(type);
+        // console.log(type);
         // parse integer values
         data.forEach(function (d) {
             d.beer.beer_abv = +d.beer.beer_abv;
@@ -64,7 +71,7 @@ function updateScatter(type) {
             .range([0, chartWidth])
             .nice();
 
-        console.log(xLinearScale(50));
+        // console.log(xLinearScale(50));
 
         var yLinearScale = d3.scaleLinear()
             .domain(d3.extent(data, d => d.beer.beer_ibu))
@@ -126,22 +133,32 @@ function updateScatter(type) {
             .attr("cx", d => xLinearScale(d.beer.beer_abv))
             .attr("cy", d => yLinearScale(d.beer.beer_ibu))
             .attr("r", function (d) {
-                if (d.beer.beer_style == type) {
-                    return 10;
+                if (d.beer.beer_style == type && d.brewery.beer_brewery_state == state) {
+                    return 12;
+                }
+                else if (d.beer.beer_style == type || d.brewery.beer_brewery_state == state) {
+                    return 8;
                 } else {
                     return 5;
                 }
             })
             .attr("fill", function (d) {
-                if (d.beer.beer_style == type) {
+                if (d.beer.beer_style == type && d.brewery.beer_brewery_state == state) {
+                    return "black";
+                }
+                else if (d.beer.beer_style == type) {
                     return "red";
-                } else {
+                } 
+                else if (d.brewery.beer_brewery_state == state) {
                     return "blue";
+                }
+                else {
+                    return "gray";
                 }
             })
             .attr("opacity", function (d) {
-                if (d.beer.beer_style == type) {
-                    return "0.75";
+                if (d.beer.beer_style == type|| d.brewery.beer_brewery_state == state) {
+                    return "0.8";
                 } else {
                     return "0.25";
                 }
@@ -156,12 +173,15 @@ function updateScatter(type) {
                 var beerName = d.beer.beer_name;
                 var beerStyle = d.beer.beer_style;
                 var breweryName = d.brewery.beer_brewery_name;
+                var breweryState = d.brewery.beer_brewery_state;
                 var htmlString = `
             <strong>${beerName}</strong>
             <hr>
             Style: ${beerStyle}
             <br>
             Brewery: ${breweryName}
+            <br>
+            State: ${breweryState}
             `;
 
                 return htmlString
@@ -188,4 +208,4 @@ function updateScatter(type) {
     });
 
 }
-updateScatter("American Adjunct Lager");
+updateScatter("All Types", "All States");

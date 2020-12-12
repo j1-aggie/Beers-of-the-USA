@@ -1,6 +1,6 @@
 var markerLayerGroup = L.layerGroup();
 // building maps to plot data to the map
-function buildMaps(style) {
+function buildMaps(style, state) {
     d3.json('/usa').then(function (data) {
         // console.log(data)
         var breweries = [];
@@ -61,7 +61,7 @@ function buildMaps(style) {
                 // console.log(latitude, longitude)
 
                 //check to see if this brewery's beer is in our array, if not then add the name, latlon, and popupContent
-                console.log(e.brewery.beer_brewery_name)
+                // console.log(e.brewery.beer_brewery_name)
                 if (breweries.indexOf(e.brewery.beer_brewery_name) === -1) {
                     if (latitude & longitude) {
                         breweries.push(e.brewery.beer_brewery_name)
@@ -77,9 +77,9 @@ function buildMaps(style) {
                     breweryIndex = breweries.indexOf(e.brewery.beer_brewery_name)
                     popupContent[breweryIndex] += `<strong>Beer:</strong> ${e.beer.beer_name} <br>`
                 }
-                console.log(markers);
-                console.log(breweries);
-                console.log(popupContent);
+                // console.log(markers);
+                // console.log(breweries);
+                // console.log(popupContent);
 
                 for (i = 0; i < markers.length; i++) {
                     markerLayerGroup.addLayer(markers[i]
@@ -115,7 +115,7 @@ function buildMaps(style) {
         };
         //markerLayerGroup=L.layerGroup(markerLayer);
         markerLayerGroup.addTo(myMap);
-        console.log('new markers');
+        // console.log('new markers');
     });
 };
 
@@ -140,10 +140,16 @@ function init() {
 
     // select from the HTML ID
     var selector = d3.select('#selDataset');
+    var stateSelector = d3.select("#selState");
+
+    var statesArray = ['All States', 'Alabama','Alaska','American Samoa','Arizona','Arkansas','California','Colorado','Connecticut','Delaware','District of Columbia','Federated States of Micronesia','Florida','Georgia','Guam','Hawaii','Idaho','Illinois','Indiana','Iowa','Kansas','Kentucky','Louisiana','Maine','Marshall Islands','Maryland','Massachusetts','Michigan','Minnesota','Mississippi','Missouri','Montana','Nebraska','Nevada','New Hampshire','New Jersey','New Mexico','New York','North Carolina','North Dakota','Northern Mariana Islands','Ohio','Oklahoma','Oregon','Palau','Pennsylvania','Puerto Rico','Rhode Island','South Carolina','South Dakota','Tennessee','Texas','Utah','Vermont','Virgin Island','Virginia','Washington','West Virginia','Wisconsin','Wyoming'];
+
+    console.log(statesArray);
+    
     // import data
     d3.json('/usa').then(function (data) {
         // console.log(data)
-        var stylesList = [];
+        var stylesList = ["All Types"];
         // create a for loop for each beer
         data.forEach((beer) => {
             // console.log(beer)
@@ -177,7 +183,14 @@ function init() {
                 .text(stylesList[i])
                 .property('value', stylesList[i])
 
-        }
+        };
+
+        for (var i = 0; i < statesArray.length; i++) {
+            stateSelector
+                .append('option')
+                .text(statesArray[i])
+                .property('value', statesArray[i])
+        };
 
 
         // // eliminate the duplicates 
@@ -203,9 +216,16 @@ function init() {
 
 }
 
-function optionChanged(newStyle) {
-    buildMaps(newStyle);
-    updateScatter(newStyle);
+function optionChanged() {
+    var selector = d3.select('#selDataset');
+    var stateSelector = d3.select("#selState");
+    var selectedStyle = selector.property("value");
+    var selectedState = stateSelector.property("value");
+    console.log("========================")
+    console.log(selectedStyle);
+    console.log(selectedState);
+    buildMaps(selectedStyle, selectedState);
+    updateScatter(selectedStyle, selectedState);
 }
 
 //build first maps

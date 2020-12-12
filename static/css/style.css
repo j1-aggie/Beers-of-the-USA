@@ -79,7 +79,7 @@ html {
   text-align: center;		
   vertical-align: middle;
   width: 230px;					
-  height: 120px;					
+  height: 90px;					
   padding: 8px;				
   font: 12px sans-serif;		
   background:lightgray;	
@@ -87,4 +87,8 @@ html {
   border-radius: 8px;			
   pointer-events: none;
   color: black;			
+}
+
+hr {
+  margin: 2px;
 }
