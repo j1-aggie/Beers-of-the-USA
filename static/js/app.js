@@ -1,6 +1,7 @@
 var markerLayerGroup = L.layerGroup();
 // building maps to plot data to the map
-function buildMaps(style, state) {
+
+function buildMapsStyle(style) {
     d3.json('/usa').then(function (data) {
         // console.log(data)
         var breweries = [];
@@ -27,6 +28,7 @@ function buildMaps(style, state) {
 
         //console.log(style);
         var filteredData = data.filter(beer => beer.beer.beer_style === style);
+        
         //console.log(filteredData);
 
         // ADD CODE HERE TO PLOT MARKERS ON THE MAP
@@ -92,6 +94,14 @@ function buildMaps(style, state) {
             });
         }
         else {
+            plotAllTypes();
+        };
+
+        if (style === 'All Types') {
+            plotAllTypes();
+        }
+
+        function plotAllTypes(){
             data.forEach(e => {
                 var latLonString = e.brewery.beer_brewery_coordinates;
                 //console.log(latLonString);
@@ -112,14 +122,128 @@ function buildMaps(style, state) {
 
                 }
             });
-        };
+        }
         //markerLayerGroup=L.layerGroup(markerLayer);
         markerLayerGroup.addTo(myMap);
         // console.log('new markers');
     });
 };
 
-buildMaps();
+function buildMapsState(state) {
+    d3.json('/usa').then(function (data) {
+        // console.log(data)
+        var breweries = [];
+        var popupContent = [];
+        var markers = [];
+
+        data.forEach((beer) => {
+            //console.log(beer)
+            var styleType = beer.beer.beer_style;
+            // console.log(styleType)
+            var styleABV = beer.beer.beer_abv;
+            // console.log(styleABV)
+            var styleIBU = beer.beer.beer_ibu;
+            // console.log(styleIBU)
+            var state = beer.brewery.beer_brewery_state;
+            // console.log(state)
+            var country = beer.brewery.beer_brewery_country;
+            // console.log(country)
+            var city = beer.brewery.beer_brewery_city
+            // console.log(city)
+            var latitude = beer.brewery.beer_brewery_coordinates;
+            //console.log(latitude)
+        })
+
+        //console.log(style);
+        var filteredData = data.filter(brewery => brewery.brewery.beer_brewery_state === state);        
+
+        //iterate through data and add marker for each coordinate when coordinates != null and when style ===
+        markerLayerGroup.clearLayers()
+        if (state) {
+            breweries = [];
+            popupContent = [];
+            markers = [];
+            filteredData.forEach(e => {
+                var latLonString = e.brewery.beer_brewery_coordinates;
+                //console.log(latLonString);
+
+                //remove the space and rejoin the array into a single string
+                latLonString = latLonString.split(" ").join("");
+
+                // remove Math.round -> 
+                var latitude = +(latLonString.split(",")[0])
+                var longitude = +(latLonString.split(",")[1])
+
+                // console.log(latitude, longitude)
+
+                //check to see if this brewery's beer is in our array, if not then add the name, latlon, and popupContent
+                // console.log(e.brewery.beer_brewery_name)
+                if (breweries.indexOf(e.brewery.beer_brewery_name) === -1) {
+                    if (latitude & longitude) {
+                        breweries.push(e.brewery.beer_brewery_name)
+                        var latlng = L.latLng(latitude, longitude);
+                        markers.push(L.marker(latlng))
+                        popupContent.push(`<strong>Brewery:</strong> ${e.brewery.beer_brewery_name} <br> 
+                                            <strong>Beer:</strong> ${e.beer.beer_name} <br>`
+                        )
+                    }
+                }
+                //this runs if the brewery is in our arrays, it 
+                else {
+                    breweryIndex = breweries.indexOf(e.brewery.beer_brewery_name)
+                    popupContent[breweryIndex] += `<strong>Beer:</strong> ${e.beer.beer_name} <br>`
+                }
+                // console.log(markers);
+                // console.log(breweries);
+                // console.log(popupContent);
+
+                for (i = 0; i < markers.length; i++) {
+                    markerLayerGroup.addLayer(markers[i]
+                        .bindPopup(popupContent[i]))
+                }
+
+
+
+
+            });
+        }
+        else {
+            plotAllStates();
+        };
+
+        if (state === 'All States') {
+            plotAllStates();
+        }
+
+        function plotAllStates() {
+            data.forEach(e => {
+                var latLonString = e.brewery.beer_brewery_coordinates;
+                //console.log(latLonString);
+
+                //remove the space and rejoin the array into a single string
+                latLonString = latLonString.split(" ").join("");
+
+                // remove Math.round -> 
+                var latitude = +(latLonString.split(",")[0])
+                var longitude = +(latLonString.split(",")[1])
+                // console.log(latitude, longitude)
+                if (latitude & longitude) {
+                    var latlng = L.latLng(latitude, longitude);
+                    markerLayerGroup.addLayer(L.marker(latlng)
+                        .bindPopup(`<strong>Beer:</strong> ${e.beer.beer_name} <br>
+                            <strong>Brewery:</strong> ${e.brewery.beer_brewery_name} <br>`)
+                    )
+
+                }
+            });
+        }
+        //markerLayerGroup=L.layerGroup(markerLayer);
+        markerLayerGroup.addTo(myMap);
+        // console.log('new markers');
+    });
+};
+
+buildMapsStyle();
 
 // building charts to pull data for each style of beer 
 function buildCharts(style) {
@@ -207,16 +331,25 @@ function init() {
         // use first name from list to build initial plots
         const firstStyle = stylesList[0]
         buildCharts(firstStyle);
-        buildMaps(firstStyle);
-
+        buildMapsStyle(firstStyle);
 
     });
 
-
-
 }
 
-function optionChanged() {
+function optionChangedStyle() {
+    var selector = d3.select('#selDataset');
+    var stateSelector = d3.select("#selState");
+    var selectedStyle = selector.property("value");
+    var selectedState = stateSelector.property("value");
+    //console.log("========================")
+    console.log(selectedStyle);
+    console.log(selectedState);
+    buildMapsStyle(selectedStyle);
+    updateScatter(selectedStyle, selectedState);
+}
+
+function optionChangedState() {
     var selector = d3.select('#selDataset');
     var stateSelector = d3.select("#selState");
     var selectedStyle = selector.property("value");
@@ -224,9 +357,11 @@ function optionChanged() {
     console.log("========================")
     console.log(selectedStyle);
     console.log(selectedState);
-    buildMaps(selectedStyle, selectedState);
+    buildMapsState(selectedState);
     updateScatter(selectedStyle, selectedState);
 }
+
+
 
 //build first maps
 var myMap = L.map("map", {
