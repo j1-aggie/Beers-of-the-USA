@@ -233,7 +233,7 @@ var myMap = L.map("map", {
     center: [37.09, -95.71],
     zoom: 4
 }).setView([37.09, -95.71], 2.5);
-myMap.options.minZoom = 4;
+myMap.options.minZoom = 3;
 myMap.options.maxZoom = 14;
 
 L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
