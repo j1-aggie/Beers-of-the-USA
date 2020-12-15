@@ -31,7 +31,7 @@ try:
 except KeyError:
     connection_string = f"{pg_user}:{pgPassword}@localhost:5432/{db_name}"
     engine = create_engine(f'postgresql://{connection_string}')
-app.config['SQLALCHEMY_DATABASE_URI']=engine
+#app.config['SQLALCHEMY_DATABASE_URI']=engine
 
 # NEW=========Creating joined table to be used in special route
 beersDF = pd.read_sql_table('beers', con=engine)
