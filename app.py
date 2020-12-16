@@ -1,4 +1,5 @@
 import os
+import psycopg2
 import pandas as pd
 import sqlalchemy
 from sqlalchemy.ext.automap import automap_base
@@ -26,12 +27,10 @@ pg_user = 'postgres'
 pg_password = pgPassword
 db_name = 'beersDB'
 
-try: 
-    db_uri = os.environ['DATABASE_URL']
-except KeyError:
-    connection_string = f"{pg_user}:{pgPassword}@localhost:5432/{db_name}"
-    engine = create_engine(f'postgresql://{connection_string}')
-#app.config['SQLALCHEMY_DATABASE_URI']=engine
+
+connection_string = f"{pg_user}:{pgPassword}@localhost:5432/{db_name}"
+engine = create_engine(f'postgresql://{connection_string}')
+
 
 # NEW=========Creating joined table to be used in special route
 beersDF = pd.read_sql_table('beers', con=engine)
